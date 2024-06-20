@@ -1,15 +1,19 @@
-# fluent-plugin-exec
+#  fluent-plugin-in_exec-extended-to-handle-non-ascii
 
-[Fluentd](https://fluentd.org/) input plugin to do something.
+A [Fluentd](https://fluentd.org/) input plugin extended built-in `in_exec` to handle non-ASCII characters. 
 
-TODO: write description for you plugin.
+This **REPLACES** the built-in `in_exec` plugin and allows the collection of non-ASCII characters.
+
+The code is the same as proposed in https://github.com/fluent/fluentd/pull/4533.
+If it is merged and released, it is recommended to update Fluentd and use the latest built-in `in_exec`.
+If you can't update Fluentd for some reason, you can use this to replace the build-in `in_exec`.
 
 ## Installation
 
 ### RubyGems
 
 ```
-$ gem install fluent-plugin-exec
+$ gem install fluent-plugin-in_exec-extended-to-handle-non-ascii
 ```
 
 ### Bundler
@@ -17,7 +21,7 @@ $ gem install fluent-plugin-exec
 Add following line to your Gemfile:
 
 ```ruby
-gem "fluent-plugin-exec"
+gem "fluent-plugin-in_exec-extended-to-handle-non-ascii"
 ```
 
 And then execute:
@@ -28,16 +32,30 @@ $ bundle
 
 ## Configuration
 
-You can generate configuration template:
+* https://docs.fluentd.org/input/exec
+* https://github.com/fluent/fluentd/pull/4533
 
-```
-$ fluent-plugin-config-format input exec
-```
+Sample config:
 
-You can copy and paste generated documents here.
+```apache
+<source>
+  @type exec
+  tag test
+  command "echo こんにちは、世界"
+  encoding utf-8
+  <parse>
+    @type none
+  </parse>
+</source>
+
+<match test>
+  @type stdout
+</match>
+```
 
 ## Copyright
 
-* Copyright(c) 2024- Daijiro Fukuda
+* Copyright(c) 2024 Fluentd Authors, Daijiro Fukuda
+  * The code is from https://github.com/fluent/fluentd/pull/4533.
 * License
   * Apache License, Version 2.0
